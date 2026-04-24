@@ -1,50 +1,41 @@
+import java.util.Arrays;
+
 public class TrainConsistManagementApp {
-
-    static class CargoSafetyException extends RuntimeException {
-        public CargoSafetyException(String message) {
-            super(message);
-        }
-    }
-
-    static class GoodsBogie {
-        String shape;
-        String cargo;
-
-        GoodsBogie(String shape) {
-            this.shape = shape;
-        }
-
-        void assignCargo(String cargo) {
-            try {
-                if (shape.equals("Rectangular") && cargo.equalsIgnoreCase("Petroleum")) {
-                    throw new CargoSafetyException("Unsafe cargo assignment!");
-                }
-
-                this.cargo = cargo;
-                System.out.println("Cargo assigned successfully -> " + cargo);
-
-            } catch (CargoSafetyException e) {
-                System.out.println("Error: " + e.getMessage());
-            } finally {
-                System.out.println("Cargo validation completed for " + shape + " bogie");
-            }
-        }
-    }
 
     public static void main(String[] args) {
 
-        System.out.println("======================================");
-        System.out.println("UC15 - Safe Cargo Assignment");
-        System.out.println("======================================\n");
+        System.out.println("UC19 - Binary Search for Bogie ID\n");
 
-        GoodsBogie b1 = new GoodsBogie("Cylindrical");
-        b1.assignCargo("Petroleum");
+        String[] bogieIds = {"BG101", "BG205", "BG309", "BG412", "BG550"};
 
-        System.out.println();
+        // Sort first (IMPORTANT)
+        Arrays.sort(bogieIds);
 
-        GoodsBogie b2 = new GoodsBogie("Rectangular");
-        b2.assignCargo("Petroleum");
+        String key = "BG309";
 
-        System.out.println("\nUC15 runtime handling completed...");
+        int low = 0;
+        int high = bogieIds.length - 1;
+        boolean found = false;
+
+        while (low <= high) {
+            int mid = (low + high) / 2;
+
+            int result = key.compareTo(bogieIds[mid]);
+
+            if (result == 0) {
+                found = true;
+                break;
+            } else if (result > 0) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+
+        if (found) {
+            System.out.println("Bogie " + key + " found using Binary Search.");
+        } else {
+            System.out.println("Bogie not found.");
+        }
     }
 }
